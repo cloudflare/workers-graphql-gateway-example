@@ -11,6 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "moment-timezone": "^0.5.17",
+    "webpack": "^4.10.2",
     "webpack-cli": "^2.1.4"
   }
 }
