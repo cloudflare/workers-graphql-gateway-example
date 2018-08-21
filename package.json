@@ -10,7 +10,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "moment-timezone": "^0.5.17",
+    "dataloader": "^1.4.0",
+    "graphql": "^0.13.2",
     "webpack": "^4.10.2",
     "webpack-cli": "^2.1.4"
   }

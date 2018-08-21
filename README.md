@@ -1,13 +1,11 @@
-Workers Webpack Example
+Workers GraphQL Example
 ====
 
 [Cloudflare Workers](http://developers.cloudflare.com/workers/) allow you to write JavaScript which runs on all of Cloudflare's
-160+ global data centers. This repo is an example of how to combine multiple files and dependencies to create a Worker using
-the [Webpack](https://webpack.js.org/) build tool.
+160+ global data centers.
+[GraphQL](https://graphql.org) provides a complete and understandable description of the data in your API, gives clients the power to ask for exactly what they need and nothing more, makes it easier to evolve APIs over time, and enables powerful developer tools.
 
-The actual Worker replaces the content of your site with a Worker which returns the current time in the timezone of the caller's
-choice.
-
+With Cloudflare Workers you can turn your exisiting APIs into blazingly fast GraphQL endpoints in minutes, with batching and caching included using  [dataloader](https://github.com/facebook/dataloader).
 ### Dependencies
 
 - [npm](https://www.npmjs.com/get-npm)
