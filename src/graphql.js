@@ -1,3 +1,11 @@
+/**
+ *  Copyright (c) 2018, Cloudflare, Inc.
+ *  All rights reserved.
+ *
+ *  This source code is licensed under the BSD-style license found in the
+ *  LICENSE file in the root directory of this source tree. An additional grant
+ *  of patent rights can be found in the PATENTS file in the same directory.
+ */
 import { graphql, buildSchema } from "graphql";
 import DataLoader from "dataloader";
 
@@ -24,14 +32,38 @@ async function decodequery(request) {
 }
 
 var schema = buildSchema(`
-  type Answer {
-    name: String
-    type: Int
-    data: String
-    ttl: Int
+  "DNS record type."
+  enum RecordType {
+    A
+    AAAA
+    MX
+    CNAME
+    DNSKEY
+    DS
+    NAPTR
+    NS
+    PTR
+    SPF
+    SRV
+    SSHFP
+    TLSA
+    TXT
   }
+
+  "DNS query response"
+   type Answer {
+    "The record owner."
+    name: String
+    "The type of DNS record. These are defined here: https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml#dns-parameters-4"
+    type: Int
+    "The number of seconds the answer can be stored in cache before it is considered stale."
+    TTL: Int
+    "The value of the DNS record for the given name and type. The data will be in text for standardized record types and in hex for unknown types."
+    data: String
+  }
+  "A DNS query to resolve a DNS record of a given type."
   type Query {
-    resolve(name: String, type: String): [Answer]
+    resolve(name: String!, type: RecordType!): [Answer]
   }
 `);
 
@@ -54,7 +86,6 @@ async function batchResolver(keys) {
 
 self.resolvers = new DataLoader(
   keys => batchResolver(keys),
-  // custom map function
   q => {
     q.type + q.name;
   }
