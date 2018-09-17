@@ -54,11 +54,16 @@ var schema = buildSchema(`
    type Answer {
     "The record owner."
     name: String
-    "The type of DNS record. These are defined here: https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml#dns-parameters-4"
+    """The type of DNS record.
+    These are defined here:
+    https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml#dns-parameters-4
+    """
     type: Int
-    "The number of seconds the answer can be stored in cache before it is considered stale."
+    """The number of seconds the answer can be stored
+    in cache before it is considered stale."""
     TTL: Int
-    "The value of the DNS record for the given name and type. The data will be in text for standardized record types and in hex for unknown types."
+    """The value of the DNS record for the given name and type.
+    The data will be in text for standardized record types and in hex for unknown types."""
     data: String
   }
   "A DNS query to resolve a DNS record of a given type."
@@ -68,7 +73,7 @@ var schema = buildSchema(`
 `);
 
 async function resolve(x) {
-  let req = await fetch(
+  let req = new Request(
     "https://cloudflare-dns.com/dns-query?name=" + x.name + "&type=" + x.type,
     {
       headers: {
@@ -76,7 +81,15 @@ async function resolve(x) {
       }
     }
   );
-  let ans = await req.json();
+
+  let cache = await caches.open("dns");
+  let resp = await cache.match(req);
+
+  if (!resp) {
+    resp = await fetch(req);
+    await cache.put(req, resp.clone());
+  }
+  let ans = await resp.json();
   return ans.Answer;
 }
 
