@@ -4,11 +4,15 @@
   "description": "",
   "scripts": {
     "build": "webpack -p --progress --colors",
-    "preview": "./scripts/open-preview < dist/worker.js"
+    "preview": "node ./scripts/open-preview.js"
   },
   "main": "dist/worker.js",
   "author": "",
   "license": "MIT",
+  "devDependencies": {
+    "node-fetch": "^2.2.0",
+    "opn": "^5.3.0"
+  },
   "dependencies": {
     "dataloader": "^1.4.0",
     "graphql": "^0.13.2",

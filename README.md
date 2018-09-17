@@ -6,8 +6,6 @@ Building a GraphQL Gateway allows you to make a single query, have GraphQL and t
 
 ### Dependencies
 - [npm](https://www.npmjs.com/get-npm) or [yarn](https://yarnpkg.com/en/docs/install#debian-stable)
-- [jq](https://stedolan.github.io/jq/) (for the preview script)
-- [cURL](https://curl.haxx.se/) (for the preview script)
 
 ### Instructions
 
