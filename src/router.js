@@ -8,11 +8,11 @@
  */
 import handleGraphQLRequest from "./graphql";
 
-export async function handleRequest(request) {
-  let u = new URL(request.url);
+export async function handleRequest(event) {
+  let u = new URL(event.request.url);
   switch (u.pathname) {
     case "/graphql":
-      return await handleGraphQLRequest(request);
+      return await handleGraphQLRequest(event);
     case "/":
       return await fetch("https://storage.googleapis.com/cfgraphql/index.html");
     case "/graphiql/cfgql.css":
