@@ -72,7 +72,7 @@ var schema = buildSchema(`
   }
 `);
 
-async function resolve(x) {
+async function resolve(event, x) {
   let req = new Request(
     "https://cloudflare-dns.com/dns-query?name=" + x.name + "&type=" + x.type,
     {
@@ -87,30 +87,29 @@ async function resolve(x) {
 
   if (!resp) {
     resp = await fetch(req);
-    x.event.waitUntil(cache.put(req, resp.clone()));
+    event.waitUntil(cache.put(req, resp.clone()));
   }
   let ans = await resp.json();
   return ans.Answer;
 }
 
-async function batchResolver(keys) {
-  return keys.map(id => resolve(id));
+async function batchResolver(event, keys) {
+  return keys.map(id => resolve(event, id));
 }
 
-self.resolvers = new DataLoader(
-  keys => batchResolver(keys),
-  q => {
-    q.type + q.name;
-  }
-);
+self.cache = new Map();
 
 class Root {
   constructor(event) {
-    this.event = event;
+    this.resolvers = new DataLoader(keys => batchResolver(event, keys), {
+      cacheKeyFn: q => {
+        q.type + q.name;
+      },
+      cacheMap: self.cache
+    });
   }
   async resolve(x) {
-    x.event = this.event;
-    return self.resolvers.load(x);
+    return this.resolvers.load(x);
   }
 }
 
