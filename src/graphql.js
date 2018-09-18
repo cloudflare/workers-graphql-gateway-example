@@ -87,7 +87,7 @@ async function resolve(x) {
 
   if (!resp) {
     resp = await fetch(req);
-    await cache.put(req, resp.clone());
+    x.event.waitUntil(cache.put(req, resp.clone()));
   }
   let ans = await resp.json();
   return ans.Answer;
@@ -105,14 +105,17 @@ self.resolvers = new DataLoader(
 );
 
 class Root {
-  constructor() {}
+  constructor(event) {
+    this.event = event;
+  }
   async resolve(x) {
+    x.event = this.event;
     return self.resolvers.load(x);
   }
 }
 
-export default async function handleGraphQLRequest(request) {
-  let gql = await decodequery(request);
-  let response = await graphql(schema, gql.query, new Root());
+export default async function handleGraphQLRequest(event) {
+  let gql = await decodequery(event.request);
+  let response = await graphql(schema, gql.query, new Root(event));
   return new Response(JSON.stringify(response));
 }
