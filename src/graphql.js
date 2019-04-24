@@ -10,8 +10,9 @@ import { graphql, buildSchema } from "graphql";
 import DataLoader from "dataloader";
 
 function binary_to_string(array) {
-  var result = "";
-  for (var i = 0; i < array.length; ++i) {
+  let result = "";
+  let len = array.length;
+  for (let i = 0; i < len; ++i) {
     result += String.fromCharCode(array[i]);
   }
   return result;
@@ -31,7 +32,7 @@ async function decodequery(request) {
   return gql;
 }
 
-var schema = buildSchema(`
+const schema = buildSchema(`
   "DNS record type."
   enum RecordType {
     A
