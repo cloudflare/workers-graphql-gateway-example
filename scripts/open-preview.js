@@ -4,8 +4,10 @@ const fetch = require("node-fetch");
 const readFile = util.promisify(fs.readFile);
 const opn = require("opn");
 
+const workerUrl = 'https://cloudflareworkers.com';
+
 async function newWorker(script) {
-  let resp = await fetch("https://cloudflareworkers.com/script", {
+  let resp = await fetch(`${ workerUrl }/script`, {
     method: "POST",
     headers: {
       "cache-control": "no-cache",
@@ -21,9 +23,9 @@ async function newWorker(script) {
 
 readFile("dist/worker.js", "utf8").then(data => {
   newWorker(data).then(id => {
-    console.log(`opening https://cloudflareworkers.com/#${ id }:https://cloudflaregraphql.com`)
+    console.log(`opening ${ workerUrl }/#${ id }:https://cloudflaregraphql.com`)
     opn(
-      "https://cloudflareworkers.com/#" + id + ":https://cloudflaregraphql.com"
+      `${ workerUrl }/#${ id }:https://cloudflaregraphql.com`
     ).catch(e => console.dir(e))
   }).catch(e => console.dir(e));
 }).catch(e => console.dir(e));
