@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "webpack -p --progress --colors",
+    "build": "webpack-cli -p --progress --colors",
     "preview": "node ./scripts/open-preview.js"
   },
   "main": "dist/worker.js",
@@ -16,7 +16,9 @@
   "dependencies": {
     "dataloader": "^1.4.0",
     "graphql": "^0.13.2",
+    "open": "^6.2.0",
     "webpack": "^4.10.2",
-    "webpack-cli": "^2.1.4"
+    "webpack-cli": "^3.3.1",
+    "yarn": "^1.15.2"
   }
 }

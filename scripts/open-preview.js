@@ -20,10 +20,10 @@ async function newWorker(script) {
 }
 
 readFile("dist/worker.js", "utf8").then(data => {
-  newWorker(data).then(id =>
+  newWorker(data).then(id => {
+    console.log(`opening https://cloudflareworkers.com/#${ id }:https://cloudflaregraphql.com`)
     opn(
-      "https://cloudflareworkers.com/#" + id + ":https://cloudflaregraphql.com",
-      { app: "chromium" }
-    )
-  );
-});
+      "https://cloudflareworkers.com/#" + id + ":https://cloudflaregraphql.com"
+    ).catch(e => console.dir(e))
+  }).catch(e => console.dir(e));
+}).catch(e => console.dir(e));
